@@ -1,0 +1,145 @@
+371. Sum of Two Integers
+public class Solution {  
+
+    public int getSum(int a, int b) {
+        if (b == 0) {
+			return a;
+		}
+
+		int cxor = a ^ b;
+		int candl = (a & b) << 1;
+
+		return getSum(cxor, candl);
+    }  
+    
+}
+
+181. Employees Earning More Than Their Managers
+select e1.Name as 'Employee' from Employee e1,Employee e2 where e1.ManagerId = e2.Id and e1.Salary > e2.Salary;
+
+190. Reverse Bits
+public class Solution {  
+
+    // you need treat n as an unsigned value
+    public int reverseBits(int n) {
+        //System.out.println(n);
+
+		int[] arr = new int[32];
+		int pos = 0;
+		for (int i = 0; i < 32; i++) {
+			int t = n & 1;
+			arr[pos++] = t;
+			n = n >> 1;
+
+			//System.out.print(arr[i]);
+		}
+		//System.out.println();
+
+		int res = 0;
+		for (int i = 0; i < 32; i++) {
+			res = res * 2 + arr[i];
+		}
+		//System.out.println(res);
+		return res;
+    }   
+    
+}
+
+205. Isomorphic Strings
+public class Solution {  
+
+    public boolean isIsomorphic(String s, String t) {
+        // 都null
+		if (s == null && t == null)
+			return true;
+		// 其中一个null
+		if (s == null || t == null)
+			return false;
+		// 长度不相等
+		if (s.length() != t.length())
+			return false;
+		char[] sArr = s.toCharArray();
+		char[] tArr = t.toCharArray();
+		Map<String, String> map = new HashMap<String, String>();
+		boolean flag = true;
+		for (int i = 0; i < s.length(); i++) {
+			String v = map.get(sArr[i] + "");
+			if (v == null) {
+				if (map.containsValue(tArr[i] + "")) {
+					flag = false;
+					break;
+				}
+				map.put(sArr[i] + "", tArr[i] + "");
+			} else {
+				if (!v.equals(tArr[i] + "")) {
+					flag = false;
+					break;
+				}
+			}
+		}
+		return flag;
+    }  
+    
+}
+
+20. Valid Parentheses
+public class Solution {  
+
+    public boolean judge(char a, char b) {
+		if (a == '[' && b == ']')
+			return true;
+		if (a == '(' && b == ')')
+			return true;
+		if (a == '{' && b == '}')
+			return true;
+		return false;
+	}
+
+	public boolean isValid(String s) {
+		char[] arr = s.toCharArray();
+		Stack<Character> stack = new Stack<Character>();
+		for (int i = 0; i < arr.length; i++) {
+			if (stack.isEmpty()) {
+				stack.push(arr[i]);
+			} else {
+				char in = stack.peek();
+				boolean res = judge(in,arr[i]);
+				if(res){
+					stack.pop();
+				}else {
+					stack.push(arr[i]);
+				}
+			}
+		}
+		return stack.isEmpty();
+	}  
+	
+}
+
+60. Permutation Sequence
+public class Solution {  
+
+    public String getPermutation(int n, int k) {
+		int[] arr = new int[n];
+		int mSum = 1;
+		for(int i=0;i<n;i++){
+			arr[i]=i+1;
+			mSum*=i+1;
+		}
+		k=k-1;
+		StringBuilder builder = new StringBuilder();
+		int tSum=mSum;
+		for(int i=n;i>0;i--){
+			tSum = tSum/i;
+			int pos = k/tSum;
+			builder.append(arr[pos]);
+			for(int j=pos;j<i-1;j++){
+				arr[j]=arr[j+1];
+			}
+			k=k%tSum;
+		}
+		return builder.toString();
+	}  
+	
+}
+
